@@ -1,0 +1,13 @@
+@use "../mixins";
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap");
+
+html {
+  // This defines what 1rem is
+  font-size: 62.5%; // 10px
+  font-family: "JetBrains Mono", monospace;
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-bg);
+}

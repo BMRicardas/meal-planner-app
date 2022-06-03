@@ -1,11 +1,9 @@
-import ProductList from "./components/Products/ProductList";
-import SearchInput from "./components/Search/SearchInput";
+import MealList from "./components/Meals/MealList";
 
 const App = () => {
   return (
     <>
-      <SearchInput />
-      <ProductList />
+      <MealList />
     </>
   );
 };

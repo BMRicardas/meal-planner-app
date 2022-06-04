@@ -3,11 +3,16 @@
   flex-wrap: wrap;
   justify-content: center;
 
+  &__title {
+    padding-bottom: 1rem;
+  }
+
   &__item {
     border: 1px solid black;
     border-radius: 3px;
     padding: 1rem;
     width: 25rem;
+    margin: 1px;
 
     font-size: 1.5rem;
   }

@@ -6,8 +6,8 @@ import Select from "../../ui/Select/Select";
 import TextInput from "../../ui/TextInput/TextInput";
 import Form from "../Form/Form";
 import MealItem from "./MealItem";
-import classes from "./MealList.module.scss";
 import NutrientsList from "./NutrientsList";
+import classes from "./MealList.module.scss";
 
 interface Props {}
 
@@ -175,7 +175,9 @@ const MealList: FC<Props> = () => {
         </div>
       ) : mealData ? (
         <>
-          <h2>Your delicious meal plan:</h2>
+          <h2 className={classes["meal-list__title"]}>
+            Your delicious meal plan:
+          </h2>
           <ul className={classes["meal-list"]}>
             {Object.entries(mealData).map(([key, value]) => {
               return (

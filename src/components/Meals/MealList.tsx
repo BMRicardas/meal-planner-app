@@ -1,20 +1,74 @@
-import { FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
+import Button from "../../ui/Button/Button";
+import Radio from "../../ui/Radio/Radio";
+import Select from "../../ui/Select/Select";
+import TextInput from "../../ui/TextInput/TextInput";
+import Form from "../Form/Form";
+import MealItem from "./MealItem";
 import classes from "./MealList.module.scss";
+import NutrientsList from "./NutrientsList";
 
 interface Props {}
 
-// TODO: remove
-const tempApiKey = "ef6fedd64246453e96f8f82e88c11ae6";
+type Weekday =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";
+
+type MealData = Record<Weekday, Meals>;
+
+interface Meals {
+  meals: Meal[];
+  nutrients: Nutrients;
+}
+
+interface Meal {
+  id: number;
+  imageType: string;
+  readyInMinutes: number;
+  servings: number;
+  sourceUrl: string;
+  title: string;
+}
+interface Nutrients {
+  calories: number;
+  carbohydrates: number;
+  fat: number;
+  protein: number;
+}
 
 const MealList: FC<Props> = () => {
-  const [mealData, setMealData] = useState<any[]>([]);
+  const [mealData, setMealData] = useState<MealData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [calories, setCalories] = useState("");
   const [dietType, setDietType] = useState("");
   const [exclude, setExclude] = useState("");
-  const [submittedCalories, setSubmittedCalories] = useState("2000");
+  const [submittedCalories, setSubmittedCalories] = useState("");
   const [submittedDietType, setSubmittedDietType] = useState("");
   const [submittedExclude, setSubmittedExclude] = useState("");
+
+  // TODO: remove
+  const tempApiKey: string = "";
+  // ef6fedd64246453e96f8f82e88c11ae6
+
+  const excludeList = [
+    "Dairy",
+    "Egg",
+    "Gluten",
+    "Grain",
+    "Peanut",
+    "Seafood",
+    "Sesame",
+    "Shellfish",
+    "Soy",
+    "Sulfite",
+    "Tree Nut",
+    "Wheat",
+  ];
 
   useEffect(() => {
     const params = new URLSearchParams({
@@ -43,23 +97,24 @@ const MealList: FC<Props> = () => {
         setIsLoading(false);
       }
     };
-
-    fetchData();
+    if (submittedCalories || submittedDietType || submittedExclude) {
+      fetchData();
+    }
   }, [submittedCalories, submittedDietType, submittedExclude]);
 
-  const handleDietTypeChange = (event: any) => {
-    setDietType(event.target.value);
+  const handleDietTypeChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    setDietType(target.value);
   };
 
-  const handleExclude = (event: any) => {
-    setExclude(event.target.value);
+  const handleExcludeChange = ({ target }: ChangeEvent<HTMLSelectElement>) => {
+    setExclude(target.value);
   };
 
-  const handleInput = (event: any) => {
-    setCalories(event.target.value);
+  const handleCaloriesChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    setCalories(target.value);
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmittedDietType(dietType);
     setSubmittedExclude(exclude);
@@ -68,115 +123,85 @@ const MealList: FC<Props> = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <fieldset>
-          <legend>
-            Choose your diet type &#40;optional&#41;, allergy &#40;optional&#41;
-            and colories count
-          </legend>
-          <div className={classes["radio-boxes"]}>
-            <div>
-              <input
-                type="radio"
-                name="dietType"
-                id="vegetarian"
-                value="vegetarian"
-                onChange={handleDietTypeChange}
-              />
-              <label htmlFor="vegetarian">Vegetarian</label>
-              <p>
-                No ingredients may contain meat or meat by-products, such as
-                bones or gelatin.
-              </p>
-            </div>
-            <div>
-              <input
-                type="radio"
-                name="dietType"
-                id="lacto-vegetarian"
-                value="lacto-vegetarian"
-                onChange={handleDietTypeChange}
-              />
-              <label htmlFor="lacto-vegetarian">Lacto-Vegetarian</label>
-              <p>
-                All ingredients must be vegetarian and none of the ingredients
-                can be or contain egg.
-              </p>
-            </div>
-            <div>
-              <input
-                type="radio"
-                name="dietType"
-                id="ovo-vegetarian"
-                value="ovo-vegetarian"
-                onChange={handleDietTypeChange}
-              />
-              <label htmlFor="ovo-vegetarian">Ovo-Vegetarian</label>
-              <p>
-                All ingredients must be vegetarian and none of the ingredients
-                can be or contain dairy.
-              </p>
-            </div>
-            <div>
-              <input
-                type="radio"
-                name="dietType"
-                id="vegan"
-                value="vegan"
-                onChange={handleDietTypeChange}
-              />
-              <label htmlFor="vegan">Vegan</label>
-              <p>
-                No ingredients may contain meat or meat by-products, such as
-                bones or gelatin, nor may they contain eggs, dairy, or honey.
-              </p>
-            </div>
-          </div>
-          <br />
-          <label htmlFor="exclude">Do you have any allergies?</label>
-          <br />
-          <select
-            name="exclude"
-            id="exclude"
-            defaultValue={exclude}
-            onChange={handleExclude}
-          >
-            <option value="">---</option>
-            <option value="dairy">Dairy</option>
-            <option value="egg">Egg</option>
-            <option value="gluten">Gluten</option>
-            <option value="grain">Grain</option>
-            <option value="peanut">Peanut</option>
-            <option value="seafood">Seafood</option>
-            <option value="sesame">Sesame</option>
-            <option value="shellfish">Shellfish</option>
-            <option value="soy">Soy</option>
-            <option value="sulfite">Sulfite</option>
-            <option value="tree-nut">Tree Nut</option>
-            <option value="wheat">Wheat</option>
-          </select>
-          <br />
-          <label htmlFor="calories">
-            How many calories do you want to eat every day?
-          </label>
-          <br />
-          <input
-            type="number"
-            inputMode="numeric"
-            id="calories"
-            value={calories}
-            min={0}
-            step={1}
-            placeholder="e.g. 2000"
-            required
-            onChange={handleInput}
+      <Form
+        title="Choose your diet type &#40;optional&#41;, allergy
+              &#40;optional&#41; and colories count"
+        onSubmit={handleSubmit}
+      >
+        <div className={classes["radio-boxes"]}>
+          <Radio
+            label="Vegetarian"
+            type="radio"
+            name="dietType"
+            id="vegetarian"
+            value="vegetarian"
+            onChange={handleDietTypeChange}
+            info="No ingredients may contain meat or meat by-products, such as bones
+              or gelatin."
           />
-          <br />
-          <button type="submit">Generate meal plan for a week</button>
-        </fieldset>
-      </form>
+          <Radio
+            label="Lacto-Vegetarian"
+            type="radio"
+            name="dietType"
+            id="lacto-vegetarian"
+            value="lacto-vegetarian"
+            onChange={handleDietTypeChange}
+            info="All ingredients must be vegetarian and none of the ingredients can
+              be or contain egg."
+          />
+          <Radio
+            label="Ovo-Vegetarian"
+            type="radio"
+            name="dietType"
+            id="ovo-vegetarian"
+            value="ovo-vegetarian"
+            onChange={handleDietTypeChange}
+            info="All ingredients must be vegetarian and none of the ingredients can
+              be or contain dairy."
+          />
+          <Radio
+            label="Vegan"
+            type="radio"
+            name="dietType"
+            id="vegan"
+            value="vegan"
+            onChange={handleDietTypeChange}
+            info="No ingredients may contain meat or meat by-products, such as bones
+              or gelatin, nor may they contain eggs, dairy, or honey."
+          />
+        </div>
+        <br />
+        <label htmlFor="exclude">Do you have any allergies?</label>
+        <br />
+        <Select
+          data={excludeList}
+          selectAttributes={{
+            name: "exclude",
+            id: "exclude",
+            defaultValue: exclude,
+            onChange: handleExcludeChange,
+          }}
+        />
+        <br />
+        <TextInput
+          label="How many calories do you want to eat every day?"
+          type="number"
+          inputMode="numeric"
+          id="calories"
+          value={calories}
+          min={0}
+          step={1}
+          placeholder="e.g. 2000"
+          required
+          onChange={handleCaloriesChange}
+        />
+        <br />
+        <Button type="submit" label="Generate meal plan for a week" />
+      </Form>
 
-      {!isLoading ? (
+      {isLoading ? (
+        <h1>Loading...</h1>
+      ) : mealData ? (
         <>
           <h2>Your delicious meal plan:</h2>
           <br />
@@ -184,32 +209,24 @@ const MealList: FC<Props> = () => {
             {Object.entries(mealData).map(([key, value]) => {
               return (
                 <li key={key}>
-                  <h3>{key}</h3>
+                  <h3>{key.toUpperCase()}</h3>
                   <ul>
-                    {value.meals.map((meal: any) => {
+                    {value.meals.map((meal) => {
                       return (
-                        <li key={meal.id}>
-                          <a
-                            href={meal.sourceUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {meal.title}
-                          </a>
-                        </li>
+                        <MealItem
+                          key={meal.id}
+                          sourceUrl={meal.sourceUrl}
+                          title={meal.title}
+                        />
                       );
                     })}
                     <br />
-                    <p>
-                      Calories: {value.nutrients.calories}
-                      <br />
-                      Carbohydrates: {value.nutrients.carbohydrates}
-                      <br />
-                      Fat: {value.nutrients.fat}
-                      <br />
-                      Protein: {value.nutrients.protein}
-                      <br />
-                    </p>
+                    <NutrientsList
+                      calories={value.nutrients.calories}
+                      carbohydrates={value.nutrients.carbohydrates}
+                      fat={value.nutrients.fat}
+                      protein={value.nutrients.protein}
+                    />
                     <br />
                   </ul>
                 </li>
@@ -217,9 +234,7 @@ const MealList: FC<Props> = () => {
             })}
           </ul>
         </>
-      ) : (
-        <h1>Loading...</h1>
-      )}
+      ) : null}
     </>
   );
 };

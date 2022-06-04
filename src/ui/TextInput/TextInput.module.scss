@@ -1,4 +1,8 @@
 .text-input {
   font-weight: 700;
   margin-bottom: var(--margin-bottom);
+
+  &__input {
+    padding: 0.5rem;
+  }
 }

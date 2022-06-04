@@ -19,7 +19,11 @@ const Select: FC<Props> = ({
       <label htmlFor={name} className={classes["select-item__label"]}>
         Do you have any allergies?
       </label>
-      <select name={name} {...selectAttributes}>
+      <select
+        name={name}
+        {...selectAttributes}
+        className={classes["select-item__select"]}
+      >
         <option value="" {...optionAttributes}>
           ---
         </option>

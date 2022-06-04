@@ -1,0 +1,21 @@
+.footer {
+  display: block;
+  font-size: 1.4rem;
+  text-align: center;
+  color: var(--color-text);
+  background: var(--color-primary-1);
+  padding: 1.5rem;
+
+  &__link {
+    &:link,
+    &:visited {
+      text-decoration: none;
+      color: var(--color-text);
+    }
+
+    &:hover,
+    &:active {
+      text-decoration: underline;
+    }
+  }
+}

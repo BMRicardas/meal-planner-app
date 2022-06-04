@@ -1,0 +1,17 @@
+.form {
+  font-size: 1.5rem;
+  margin-bottom: var(--margin-bottom);
+
+  &__fieldset {
+    border: none;
+    border-bottom: 1px solid black;
+    padding-bottom: 2rem;
+  }
+
+  &__legend {
+    margin: 2rem;
+    font-weight: 700;
+    text-align: center;
+    border-bottom: 1px solid black;
+  }
+}

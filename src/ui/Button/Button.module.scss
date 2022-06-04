@@ -1,0 +1,30 @@
+.button {
+  align-items: center;
+  background-color: #fcfcfd;
+  border-radius: 3px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 0.4rem,
+    rgba(45, 35, 66, 0.3) 0 0.7rem 1.3rem -3px, #d6d6e7 0 -3px 0 inset;
+  cursor: pointer;
+  display: inline-flex;
+  height: 5rem;
+  padding: 1rem 3rem;
+  transition: box-shadow 0.15s, transform 0.15s;
+  font-size: 1.5rem;
+}
+
+.button:focus {
+  box-shadow: #d6d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 0.4rem,
+    rgba(45, 35, 66, 0.3) 0 0.7rem 1.3rem -3px, #d6d6e7 0 -3px 0 inset;
+}
+
+.button:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 0.4rem 0.8rem,
+    rgba(45, 35, 66, 0.3) 0 0.7rem 1.3rem -3px, #d6d6e7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.button:active {
+  box-shadow: #d6d6e7 0 3px 0.7rem inset;
+  transform: translateY(2px);
+}

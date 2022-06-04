@@ -1,4 +1,5 @@
 import { FC, FormHTMLAttributes, ReactNode } from "react";
+import classes from "./Form.module.scss";
 
 interface Props extends FormHTMLAttributes<HTMLFormElement> {
   children: ReactNode;
@@ -7,13 +8,9 @@ interface Props extends FormHTMLAttributes<HTMLFormElement> {
 
 const Form: FC<Props> = ({ children, title, ...restOfProps }) => {
   return (
-    <form {...restOfProps}>
-      <fieldset>
-        <legend>
-          {title}
-          Choose your diet type &#40;optional&#41;, allergy &#40;optional&#41;
-          and colories count
-        </legend>
+    <form {...restOfProps} className={classes.form}>
+      <fieldset className={classes["form__fieldset"]}>
+        <legend className={classes["form__legend"]}>{title}</legend>
         {children}
       </fieldset>
     </form>

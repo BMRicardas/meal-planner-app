@@ -1,4 +1,5 @@
-import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
+import useRecepiesData from "../../hooks/useRecepiesData";
 import Button from "../../ui/Button/Button";
 import Radio from "../../ui/Radio/Radio";
 import Select from "../../ui/Select/Select";
@@ -19,7 +20,7 @@ type Weekday =
   | "saturday"
   | "sunday";
 
-type MealData = Record<Weekday, Meals>;
+export type MealData = Record<Weekday, Meals>;
 
 interface Meals {
   meals: Meal[];
@@ -42,18 +43,14 @@ interface Nutrients {
 }
 
 const MealList: FC<Props> = () => {
-  const [mealData, setMealData] = useState<MealData | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, mealData] = useRecepiesData(url);
+  // const [isLoading, setIsLoading] = useState(false);
   const [calories, setCalories] = useState("");
   const [dietType, setDietType] = useState("");
   const [exclude, setExclude] = useState("");
   const [submittedCalories, setSubmittedCalories] = useState("");
   const [submittedDietType, setSubmittedDietType] = useState("");
   const [submittedExclude, setSubmittedExclude] = useState("");
-
-  // TODO: remove
-  const tempApiKey: string = "";
-  // ef6fedd64246453e96f8f82e88c11ae6
 
   const excludeList = [
     "Dairy",
@@ -70,37 +67,11 @@ const MealList: FC<Props> = () => {
     "Wheat",
   ];
 
-  useEffect(() => {
-    const params = new URLSearchParams({
-      apiKey: tempApiKey
-        ? tempApiKey
-        : (process.env.REACT_APP_API_KEY as string),
-      timeFrame: "week",
-      targetCalories: submittedCalories,
-      ...(submittedDietType && { diet: submittedDietType }),
-      ...(submittedExclude && { exclude: submittedExclude }),
-    });
-
-    const fetchData = async () => {
-      const url = `https://api.spoonacular.com/mealplanner/generate?${params.toString()}`;
-
-      try {
-        setIsLoading(true);
-
-        const response = await fetch(url);
-        const { week } = await response.json();
-
-        setMealData(week);
-      } catch (error) {
-        console.log("Failed to fetch from API", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    if (submittedCalories || submittedDietType || submittedExclude) {
-      fetchData();
-    }
-  }, [submittedCalories, submittedDietType, submittedExclude]);
+  const [isLoading, mealData] = useRecepiesData(
+    submittedCalories,
+    submittedDietType,
+    submittedExclude
+  );
 
   const handleDietTypeChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setDietType(target.value);
@@ -170,11 +141,9 @@ const MealList: FC<Props> = () => {
               or gelatin, nor may they contain eggs, dairy, or honey."
           />
         </div>
-        <br />
-        <label htmlFor="exclude">Do you have any allergies?</label>
-        <br />
         <Select
           data={excludeList}
+          name="exclude"
           selectAttributes={{
             name: "exclude",
             id: "exclude",
@@ -182,7 +151,6 @@ const MealList: FC<Props> = () => {
             onChange: handleExcludeChange,
           }}
         />
-        <br />
         <TextInput
           label="How many calories do you want to eat every day?"
           type="number"
@@ -195,20 +163,23 @@ const MealList: FC<Props> = () => {
           required
           onChange={handleCaloriesChange}
         />
-        <br />
         <Button type="submit" label="Generate meal plan for a week" />
       </Form>
 
       {isLoading ? (
-        <h1>Loading...</h1>
+        <div className={classes["lds-ellipsis"]}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       ) : mealData ? (
         <>
           <h2>Your delicious meal plan:</h2>
-          <br />
-          <ul>
+          <ul className={classes["meal-list"]}>
             {Object.entries(mealData).map(([key, value]) => {
               return (
-                <li key={key}>
+                <li key={key} className={classes["meal-list__item"]}>
                   <h3>{key.toUpperCase()}</h3>
                   <ul>
                     {value.meals.map((meal) => {
@@ -220,14 +191,12 @@ const MealList: FC<Props> = () => {
                         />
                       );
                     })}
-                    <br />
                     <NutrientsList
                       calories={value.nutrients.calories}
                       carbohydrates={value.nutrients.carbohydrates}
                       fat={value.nutrients.fat}
                       protein={value.nutrients.protein}
                     />
-                    <br />
                   </ul>
                 </li>
               );

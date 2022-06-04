@@ -16,13 +16,9 @@ const NutrientsList: FC<Props> = ({
   return (
     <p>
       Calories: {calories}
-      <br />
       Carbohydrates: {carbohydrates}
-      <br />
       Fat: {fat}
-      <br />
       Protein: {protein}
-      <br />
     </p>
   );
 };

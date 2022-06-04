@@ -1,4 +1,5 @@
 import { FC, InputHTMLAttributes } from "react";
+import classes from "./TextInput.module.scss";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
@@ -7,7 +8,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 const TextInput: FC<Props> = ({ id, label, ...inputProps }) => {
   return (
-    <div>
+    <div className={classes["text-input"]}>
       <label htmlFor={id}>{label}</label>
       <input id={id} {...inputProps} />
     </div>

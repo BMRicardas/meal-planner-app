@@ -1,4 +1,5 @@
 import { FC, InputHTMLAttributes } from "react";
+import classes from "./Radio.module.scss";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
@@ -8,11 +9,13 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 const Radio: FC<Props> = ({ id, label, info, ...inputProps }) => {
   return (
-    <>
-      <input id={id} {...inputProps} />
-      <label htmlFor={id}>{label}</label>
-      <p>{info}</p>
-    </>
+    <div className={classes["radio-item"]}>
+      <input id={id} {...inputProps} className={classes["radio-item__input"]} />
+      <label htmlFor={id} className={classes["radio-item__label"]}>
+        {label}
+      </label>
+      <p className={classes["radio-item__paragraph"]}>{info}</p>
+    </div>
   );
 };
 

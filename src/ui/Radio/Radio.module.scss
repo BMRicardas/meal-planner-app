@@ -1,0 +1,12 @@
+.radio-item {
+  &__input {
+    margin-right: 1rem;
+  }
+
+  &__label {
+    font-weight: 700;
+  }
+  &__paragraph {
+    margin-bottom: var(--margin-bottom);
+  }
+}

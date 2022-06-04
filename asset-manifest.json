@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/meal-planner-app/static/css/main.7ce40b1d.css",
-    "main.js": "/meal-planner-app/static/js/main.b7d6f5c8.js",
+    "main.css": "/meal-planner-app/static/css/main.e5b5527a.css",
+    "main.js": "/meal-planner-app/static/js/main.33f9fbe5.js",
     "index.html": "/meal-planner-app/index.html",
-    "main.7ce40b1d.css.map": "/meal-planner-app/static/css/main.7ce40b1d.css.map",
-    "main.b7d6f5c8.js.map": "/meal-planner-app/static/js/main.b7d6f5c8.js.map"
+    "main.e5b5527a.css.map": "/meal-planner-app/static/css/main.e5b5527a.css.map",
+    "main.33f9fbe5.js.map": "/meal-planner-app/static/js/main.33f9fbe5.js.map"
   },
   "entrypoints": [
-    "static/css/main.7ce40b1d.css",
-    "static/js/main.b7d6f5c8.js"
+    "static/css/main.e5b5527a.css",
+    "static/js/main.33f9fbe5.js"
   ]
 }

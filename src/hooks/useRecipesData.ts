@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { MealData } from "../components/Meals/MealList";
 
-const useRecepiesData = (
+const useRecipesData = (
   submittedCalories: string,
   submittedDietType: string,
   submittedExclude: string
-) => {
+): [boolean, MealData | null] => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<MealData | null>(null);
 
@@ -37,7 +37,7 @@ const useRecepiesData = (
       fetchData();
     }
   }, [submittedCalories, submittedDietType, submittedExclude]);
-  return [isLoading, data] as const;
+  return [isLoading, data];
 };
 
-export default useRecepiesData;
+export default useRecipesData;

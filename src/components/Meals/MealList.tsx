@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, FormEvent, useState } from "react";
-import useRecepiesData from "../../hooks/useRecepiesData";
+import useRecipesData from "../../hooks/useRecipesData";
 import Button from "../../ui/Button/Button";
 import Radio from "../../ui/Radio/Radio";
 import Select from "../../ui/Select/Select";
@@ -43,8 +43,6 @@ interface Nutrients {
 }
 
 const MealList: FC<Props> = () => {
-  // const [isLoading, mealData] = useRecepiesData(url);
-  // const [isLoading, setIsLoading] = useState(false);
   const [calories, setCalories] = useState("");
   const [dietType, setDietType] = useState("");
   const [exclude, setExclude] = useState("");
@@ -67,7 +65,7 @@ const MealList: FC<Props> = () => {
     "Wheat",
   ];
 
-  const [isLoading, mealData] = useRecepiesData(
+  const [isLoading, mealData] = useRecipesData(
     submittedCalories,
     submittedDietType,
     submittedExclude
@@ -96,7 +94,7 @@ const MealList: FC<Props> = () => {
     <>
       <Form
         title="Choose your diet type &#40;optional&#41;, allergy
-              &#40;optional&#41; and colories count"
+              &#40;optional&#41; and calories count"
         onSubmit={handleSubmit}
       >
         <div className={classes["radio-boxes"]}>
